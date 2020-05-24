@@ -7,6 +7,7 @@ my $mappingfile=shift@ARGV;
 my $datafile=shift@ARGV;
 
 
+%order=();
 open(INFILE,$mappingfile);
 %map=();
 <INFILE>;
@@ -14,6 +15,7 @@ while (<INFILE>)
 {
 	chomp;
 	@a=split('\t');
+	$order{$a[0]}=$a[0];
 	if ($a[1] ne "")
 	{
 		if (defined $map{'MouseSymbol'}{$a[0]} && $a[1] ne "" )
@@ -39,15 +41,6 @@ while (<INFILE>)
 }
 close(INFILE);
 
-@order=();
-open(INFILE,"order.txt");
-while (<INFILE>)
-{
-	chomp;
-	push(@order,$_);
-}
-close(INFILE);
-
 %data={};
 open(INFILE,$datafile);
 $line = <INFILE>;
@@ -67,7 +60,7 @@ while (<INFILE>)
 }
 close(INFILE);
 
-foreach $key (@order)
+foreach $key (keys (%order))
 {
 	$str=$key;
 
